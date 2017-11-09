@@ -43,7 +43,7 @@ Each of these resources is represented through the dotnet client by a Class as `
 You can set the `Personal Access Token` via creating an `Authentication` object by invoking the single paramter constructor:
 
 ```cs
-UsersClient countsClient = new UsersClient(new Authentication("MyPersonalAccessToken"));
+UsersClient usersClient = new UsersClient(new Authentication("MyPersonalAccessToken"));
 ```
 If you already have an access token you can find it [here](https://app.intercom.com/developers/_). If you want to create or learn more about access tokens then you can find more info [here](https://developers.intercom.io/docs/personal-access-tokens).
 
@@ -156,6 +156,10 @@ foreach (Contact c in contacts.contacts)
 Contacts contacts = contactsClient.Scroll();
 String scroll_param_value = contacts.scroll_param;
 Contacts contacts = contactsClient.Scroll(scroll_param_value);
+
+// Convert a contact to a User
+// Note that if the user does not exist they will be created, otherwise they will be merged.
+User user = contactsClient.Convert(contact, new User() { user_id = "120" });
 
 // Delete a contact
 contactsClient.Delete("100300231");
@@ -315,8 +319,8 @@ tagsClient.Delete(new Tag() { id = "100300231" });
 
 // Tag User, Company or Contact (Lead)
 tagsClient.Tag("new_tag", new List<Company>() { new Company(){ id = "1000_company_id" } });
-tagsClient.Tag("new_tag", new List<Contact>() { new Company(){ id = "1000_contact_id" } });
-tagsClient.Tag("new_tag", new List<User>() { new Company(){ id = "1000_user_id" } });
+tagsClient.Tag("new_tag", new List<Contact>() { new Contact(){ id = "1000_contact_id" } });
+tagsClient.Tag("new_tag", new List<User>() { new User(){ id = "1000_user_id" } });
 tagsClient.Tag("new_tag", new List<String>() {"1000_company_id" ,"1001_company_id" }, TagsClient.EntityType.Company);
 
 
